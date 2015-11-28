@@ -1,0 +1,3 @@
+FROM java:8
+ADD msapp-1.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar", "accounts", "2225"]

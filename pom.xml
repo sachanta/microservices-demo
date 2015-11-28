@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.samples.service.service</groupId>
-	<artifactId>microservice-demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>msapp</artifactId>
+	<version>1</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -84,6 +84,53 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>net.wouterdanes.docker</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>package</id>
+						<goals>
+							<goal>build-images</goal>
+						</goals>
+						<configuration>
+							<images>
+								<image>
+									<id>msdemo_registrar</id>
+									<nameAndTag>msdemo_registrar</nameAndTag>
+									<dockerFile>${project.basedir}/src/main/docker/registrar/Dockerfile_registrar</dockerFile>
+									<artifacts>
+										<artifact>
+											<file>${project.build.directory}/msapp-1.jar</file>
+										</artifact>										
+									</artifacts>
+								</image>
+								<image>
+									<id>msdemo_web</id>
+									<nameAndTag>msdemo_web</nameAndTag>
+									<dockerFile>${project.basedir}/src/main/docker/web/Dockerfile_web</dockerFile>
+									<artifacts>
+										<artifact>
+											<file>${project.build.directory}/msapp-1.jar</file>
+										</artifact>										
+									</artifacts>
+								</image>
+								<image>
+									<id>msdemo_accounts</id>
+									<nameAndTag>msdemo_accounts</nameAndTag>
+									<dockerFile>${project.basedir}/src/main/docker/accounts/Dockerfile_accounts</dockerFile>
+									<artifacts>
+										<artifact>
+											<file>${project.build.directory}/msapp-1.jar</file>
+										</artifact>										
+									</artifacts>
+								</image>
+							</images>
+						</configuration>						
+					</execution>
+				</executions>				
 			</plugin>
 		</plugins>
 	</build>
